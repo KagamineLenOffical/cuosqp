@@ -32,7 +32,7 @@ typedef struct {
 } CUDA_Handle_t;
 
 
-/** Initialize CUDA library handle.
+/** Initialize CUDA library handle.F
  * @return	CUDA library handle, or NULL if failure.
  */
 CUDA_Handle_t* cuda_init_libs(void);

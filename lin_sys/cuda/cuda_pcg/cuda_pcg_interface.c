@@ -238,6 +238,18 @@ c_int solve_linsys_cudapcg(cudapcg_solver *s,
 
   /* Solve the linear system with PCG */
   pcg_iters = cuda_pcg_alg(s, eps, s->max_iter);
+//  static int cnt = 0;
+//  if(admm_iter % 200 == 0){
+//      printf("eps = %.6f",eps);
+//      cnt = 0;
+//  }
+//  if(pcg_iters == s->max_iter){
+//      cnt++;
+//      printf("meet max_iter %d times\n",cnt);
+//  }
+//  else{
+//      //printf("meet end_condition\n");
+//  }
 
   /* Copy the first part of the solution to b->d_val */
   cuda_vec_copy_d2d(b->d_val, s->d_x, s->n);

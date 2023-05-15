@@ -8,7 +8,7 @@ list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 # Export compile commands
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
+set(CMAKE_CUDA_STANDARD 17)
 # Set the output folder where your program will be created
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/out)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/out)
@@ -113,14 +113,18 @@ message(STATUS "Code coverage is ${COVERAGE}")
 # ----------------------------------------------
 if (CUDA_SUPPORT)
     enable_language(CUDA)
-    find_package(CUDA)
-
+    find_package(CUDA 11.3 REQUIRED)
+    #find_package(CUDAToolkit REQUIRED)
+    #message ( STATUS "CUDAToolkit_INCLUDE_DIRS = ${CUDAToolkit_INCLUDE_DIRS}" )
     # cublas and cusparse headers
-    include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+    #include_directories(${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+    #include_directories(${CUDAToolkit_INCLUDE_DIRS})
 
     # sm_75 -> Turing support
+    set(CMAKE_CUDA_ARCHITECTURES 75)
     include(CudaComputeTargetFlags)
     set_directory_properties(PROPERTIES COMPILE_DEFINITIONS "")
+    link_directories(${CUDAToolkit_LIBRARY_DIR})
     APPEND_TARGET_ARCH_FLAGS()
 endif()
 
@@ -382,6 +386,18 @@ if (NOT PYTHON AND NOT MATLAB AND NOT R_LANG AND NOT EMBEDDED)
     add_executable (osqp_demo ${PROJECT_SOURCE_DIR}/examples/osqp_demo.c)
     target_link_libraries (osqp_demo osqpstatic)
     target_include_directories(osqp_demo PUBLIC ${csc_tools_includes})
+
+    find_package(gflags CONFIG REQUIRED)
+    find_package(Eigen3 CONFIG REQUIRED)
+    find_package(absl CONFIG REQUIRED)
+    find_package(libigl CONFIG REQUIRED)
+    find_package(tinyxml2 CONFIG REQUIRED)
+    # Create test executable in cpp
+    #add_executable (osqp_test ${PROJECT_SOURCE_DIR}/test/osqp_test_float_v.cpp)
+
+    add_executable (osqp_test ${PROJECT_SOURCE_DIR}/test/osqp_test.cpp)
+    target_link_libraries(osqp_test osqpstatic absl::status absl::span gflags::gflags igl::igl_core tinyxml2::tinyxml2)
+    target_include_directories(osqp_test PUBLIC ${csc_tools_includes})
 
 endif (NOT PYTHON AND NOT MATLAB AND NOT R_LANG AND NOT EMBEDDED)
 

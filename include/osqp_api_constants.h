@@ -92,7 +92,7 @@ extern const char * OSQP_ERROR_MESSAGE[];
 # endif // ifndef EMBEDDED
 
 #ifdef CUDA_SUPPORT
-#  define CHECK_TERMINATION (5)
+#  define CHECK_TERMINATION (25)
 #else
 #  define CHECK_TERMINATION (25)
 #endif

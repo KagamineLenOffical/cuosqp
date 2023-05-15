@@ -46,7 +46,7 @@ void print_header(void) {
   // Main information
   c_print("objective    pri res    dua res    rho");
 # ifdef PROFILING
-  c_print("        time");
+  c_print("        time    gpu time");
 # endif /* ifdef PROFILING */
   c_print("\n");
 }
@@ -151,6 +151,8 @@ void print_summary(OSQPSolver *solver) {
     // total time: update + solve
     c_print("  %9.2es", info->update_time + info->solve_time);
   }
+    c_print("  %9.2es", info->gpu_time);
+
 # endif /* ifdef PROFILING */
   c_print("\n");
 

@@ -95,6 +95,7 @@ typedef struct {
   c_float update_time; ///< time taken for update phase (seconds)
   c_float polish_time; ///< time taken for polish phase (seconds)
   c_float run_time;    ///< total time  (seconds)
+  c_float gpu_time;
 # endif // ifdef PROFILING
 
 } OSQPInfo;

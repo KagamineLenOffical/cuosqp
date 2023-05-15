@@ -24,10 +24,12 @@ extern "C" {
 
 /* PCG parameters */
 #define CUDA_PCG_PRECONDITION        (1)
-#define CUDA_PCG_MAX_ITER            (20)
+//#define CUDA_PCG_MAX_ITER            (300)
+#define CUDA_PCG_MAX_ITER            (300)
 #define CUDA_PCG_WARM_START          (1)
 #define CUDA_PCG_NORM                (0)     /* 0: inf;  2: Euclidean */
-#define CUDA_PCG_EPS_MIN             (1e-7)
+#define CUDA_PCG_EPS_MIN             (1e-6)
+//#define CUDA_PCG_EPS_MIN             (1e-7)
 
 /* Tolerance parameters */
 #define CUDA_PCG_START_TOL           (50)

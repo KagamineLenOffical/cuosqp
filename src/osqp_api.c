@@ -398,6 +398,8 @@ c_int osqp_solve(OSQPSolver *solver) {
 
   // Main ADMM algorithm
 
+    OSQPTimer *timer = c_malloc(sizeof(OSQPTimer));
+    if (!(work->timer)) return osqp_error(OSQP_MEM_ALLOC_ERROR);
   max_iter = solver->settings->max_iter;
   for (iter = 1; iter <= max_iter; iter++) {
 
@@ -407,7 +409,10 @@ c_int osqp_solve(OSQPSolver *solver) {
 
     /* ADMM STEPS */
     /* Compute \tilde{x}^{k+1}, \tilde{z}^{k+1} */
+
+      osqp_tic(timer);
     update_xz_tilde(solver, iter);
+     solver->info->gpu_time += osqp_toc(timer);
 
     /* Compute x^{k+1} */
     update_x(solver);
@@ -477,6 +482,7 @@ c_int osqp_solve(OSQPSolver *solver) {
       if (can_print) {
         // Print summary
         print_summary(solver);
+        //printf("total gpu runtime:%.8f\n",total_time);
       }
 
       if (can_check_termination) {
